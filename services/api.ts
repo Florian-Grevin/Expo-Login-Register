@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:3000/api';
+//const API_URL = 'http://localhost:3000/api';
+const API_URL = 'http://10.10.25.5:3000/api';
 
 class ApiService {
     private token: string | null = null;
