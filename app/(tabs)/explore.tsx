@@ -7,9 +7,14 @@ export default function TabTwoScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <View style={styles.avatarPlaceholder}>
-          <Ionicons name="person" size={48} color={"#118397ff"}/>
-        </View>
+        <TouchableOpacity style={styles.avatarContainer}>
+          <View style={styles.avatarPlaceholder}>
+            <Ionicons name="person" size={48} color={"#118397ff"}/>
+          </View>
+          <View style={styles.editBadge}>
+              <Ionicons name="camera" size={14} color={"#fff"}/>
+          </View>
+        </TouchableOpacity>
        <Text style={styles.email}>{user?.email}</Text>
       </View>
       <View style={styles.section}>
@@ -35,6 +40,11 @@ const styles = StyleSheet.create({
     borderColor: "#e0e0e0",
 
   },
+  avatarContainer : {
+    position: "relative",
+    marginTop: 16,
+    marginBottom: 16,
+  },
   avatarPlaceholder : {
     width: 96,
     height: 96,
@@ -42,6 +52,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#dce9ebff',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  editBadge : {
+    position: "absolute",
+    bottom:0,
+    right:0,
+    backgroundColor: "#118397ff",
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    justifyContent: "center",
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: '#fff',
   },
   section : {
     backgroundColor: "#fff",
