@@ -1,7 +1,25 @@
+import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "expo-router";
-import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { useState } from "react";
+import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function LoginScreen() {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [setLoading, isSetLoading] = useState(false);
+    const { login } = useAuth();
+
+    const handleLogin = async () => {
+        if(!email || !password) {
+            Alert.alert("Erreur", "Veuillez remplir tout les champs.")
+        }
+        try {
+
+        } catch (error) {
+            
+        }
+    }
 
     return (
         <KeyboardAvoidingView 
@@ -21,7 +39,7 @@ export default function LoginScreen() {
                         placeholder="Mot de passe"
                         placeholderTextColor="#777"
                     />
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={handleLogin}>
                         <Text style={styles.buttonText}>Se connecter</Text>
                     </TouchableOpacity>
                 </View>
