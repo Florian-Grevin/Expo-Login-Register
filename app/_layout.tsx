@@ -11,7 +11,7 @@ function RootLayoutNav() {
   useEffect(() => {
     if (isLoading) return;
 
-    const inAuthGroup = segments[0] === "(auth)";
+    const inAuthGroup = segments[0]?.startsWith("/(auth)");
 
     if(!user && inAuthGroup) {
       router.replace('/(auth)/login');

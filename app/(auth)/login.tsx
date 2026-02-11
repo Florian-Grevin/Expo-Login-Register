@@ -1,23 +1,28 @@
 import { useAuth } from "@/contexts/AuthContext";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
-import { Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function LoginScreen() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [setLoading, isSetLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { login } = useAuth();
 
     const handleLogin = async () => {
         if(!email || !password) {
             Alert.alert("Erreur", "Veuillez remplir tout les champs.")
+            return;
         }
+        setIsLoading(true);
         try {
-
-        } catch (error) {
-            
+            await login(email, password);
+            router.replace("/(tabs)")
+        } catch (error : any) {
+            Alert.alert("Erreur", error.message || "Connexion échouée")
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -33,14 +38,34 @@ export default function LoginScreen() {
                         style={styles.input}
                         placeholder="Email"
                         placeholderTextColor="#777"
+                        value={email}
+                        onChangeText={setEmail}
+                        autoCorrect={false}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
                     />
                     <TextInput 
                         style={styles.input}
                         placeholder="Mot de passe"
                         placeholderTextColor="#777"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+
                     />
-                    <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                        <Text style={styles.buttonText}>Se connecter</Text>
+                    <TouchableOpacity 
+                        style={[styles.button, isLoading && styles.buttonDisabled]} 
+                        onPress={handleLogin}
+                        disabled={isLoading}
+                    >
+                            {
+                                isLoading ? (
+                                    <ActivityIndicator color='#fff'/>
+                                ) : (
+                                   <Text style={styles.buttonText}>Se connecter</Text> 
+                                )
+                            }
+                        
                     </TouchableOpacity>
                 </View>
                 <View style={styles.footer}>
@@ -94,6 +119,9 @@ const styles = StyleSheet.create({
         padding: 16,
         alignItems: "center",
         marginTop: 8,
+    },
+    buttonDisabled : {
+        opacity: 0.7,
     },
     buttonText : {
         color: "#fff",
