@@ -1,12 +1,15 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Link } from "expo-router";
+import { KeyboardAvoidingView, Platform, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 export default function LoginScreen() {
 
     return (
-        <View style={styles.container}>
+        <KeyboardAvoidingView 
+            behavior={Platform.OS == 'ios' ? 'padding' : "height"}
+            style={styles.container}>
             <View style={styles.content}>
                 <Text style={styles.title}>Connexion</Text>
-                <Text style={styles.subTitle}>Bienvenue! connectez-vous pour continuer.</Text>
+                <Text style={styles.subTitle}>Bienvenue! Connectez-vous pour continuer.</Text>
                 <View style={styles.form}>
                     <TextInput 
                         style={styles.input}
@@ -23,10 +26,15 @@ export default function LoginScreen() {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.footer}>
-                    <Text style={styles.footerText}>Pas encore de compte? S'inscrire</Text>
+                    <Text style={styles.footerText}>Pas encore de compte?</Text>
+                    <Link href="/(auth)/register" asChild>
+                         <TouchableOpacity>
+                            <Text style={styles.link}>S'inscrire</Text>
+                         </TouchableOpacity>
+                    </Link>
                 </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -84,5 +92,10 @@ const styles = StyleSheet.create({
     footerText : {
         color: "#666",
         fontSize: 16,
+    },
+    link : {
+        color: "#118397ff",
+        fontSize: 16,
+        fontWeight: "600",
     }
 });
