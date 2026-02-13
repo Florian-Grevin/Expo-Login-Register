@@ -1,13 +1,41 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from 'expo-image-picker';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+
+const AVATAR_STORAGE_KEY = 'user_avatar';
 
 export default function TabTwoScreen() {
   const {user, logout} = useAuth();
-
   const [avatarUri, setAvatarUri] = useState<string | null>(null);
+
+  useEffect(() => {
+    loadAvatar();
+  })
+
+  const loadAvatar = async () => {
+    try {
+      const savedAvatar = await AsyncStorage.getItem(AVATAR_STORAGE_KEY);
+      if(savedAvatar) {
+        setAvatarUri(savedAvatar);
+      }
+    }
+    catch (error) {
+      console.error('Erreur de chargement avatar : ', error);
+    }
+  }
+
+  const saveAvatar = async (uri : string) => {
+    try {
+      await AsyncStorage.setItem(AVATAR_STORAGE_KEY, uri);
+    }
+    catch (error) {
+      console.error("Erreur sauvegarde avatar : ", error)
+    }
+  }
+
 
   const handlePickImage = () => {
     Alert.alert(
@@ -45,6 +73,7 @@ export default function TabTwoScreen() {
     if(!result.canceled && result.assets[0]) {
       const uri = result.assets[0].uri;
       setAvatarUri(uri);
+      saveAvatar(uri);
     }
     
   }
