@@ -44,7 +44,7 @@ export default function TabTwoScreen() {
       [
         {
           text: 'Prendre une photo',
-          onPress: () => console.log('photo'),
+          onPress: pickFromCamera,
         },
         {
           text: 'Prendre depuis la galerie',
@@ -57,6 +57,25 @@ export default function TabTwoScreen() {
       ]
     );
   };
+
+  const pickFromCamera = async () => {
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if ( status !== 'granted' ) {
+      Alert.alert('Permissions refusée', 'Nous avons besoin de la permission photo');
+      return;
+    }
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing :  true,
+      aspect : [1, 1],
+      quality : 0.8,
+    })
+    if(!result.canceled && result.assets[0]) {
+      const uri = result.assets[0].uri;
+      setAvatarUri(uri);
+      saveAvatar(uri);
+    }
+    
+  }
 
   const pickFromGallery = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
