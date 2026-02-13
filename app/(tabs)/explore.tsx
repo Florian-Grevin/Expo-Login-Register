@@ -1,13 +1,58 @@
 import { useAuth } from "@/contexts/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import * as ImagePicker from 'expo-image-picker';
+import { useState } from "react";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function TabTwoScreen() {
   const {user, logout} = useAuth();
+
+  const [avatarUri, setAvatarUri] = useState<string | null>(null);
+
+  const handlePickImage = () => {
+    Alert.alert(
+      'Photo de profil',
+      'Choisissez une option',
+      [
+        {
+          text: 'Prendre une photo',
+          onPress: () => console.log('photo'),
+        },
+        {
+          text: 'Prendre depuis la galerie',
+          onPress: pickFromGallery,
+        },
+        {
+          text: 'Annuler',
+          style: 'cancel',
+        },
+      ]
+    );
+  };
+
+  const pickFromGallery = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if ( status !== 'granted' ) {
+      Alert.alert('Permissions refusée', 'Nous avons besoin de la permission galerie');
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes : ['images'],
+      allowsEditing :  true,
+      aspect : [1, 1],
+      quality : 0.8,
+    })
+    if(!result.canceled && result.assets[0]) {
+      const uri = result.assets[0].uri;
+      console.log(uri);
+    }
+    
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.avatarContainer}>
+        <TouchableOpacity style={styles.avatarContainer} onPress={handlePickImage}>
           <View style={styles.avatarPlaceholder}>
             <Ionicons name="person" size={48} color={"#118397ff"}/>
           </View>
