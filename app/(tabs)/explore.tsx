@@ -2,7 +2,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Ionicons } from "@expo/vector-icons";
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function TabTwoScreen() {
   const {user, logout} = useAuth();
@@ -44,7 +44,7 @@ export default function TabTwoScreen() {
     })
     if(!result.canceled && result.assets[0]) {
       const uri = result.assets[0].uri;
-      console.log(uri);
+      setAvatarUri(uri);
     }
     
   }
@@ -53,9 +53,14 @@ export default function TabTwoScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.avatarContainer} onPress={handlePickImage}>
-          <View style={styles.avatarPlaceholder}>
+          {avatarUri? (
+            <Image source={{uri : avatarUri}} style={styles.avatarImage}/>
+          ) : (
+            <View style={styles.avatarPlaceholder}>
             <Ionicons name="person" size={48} color={"#118397ff"}/>
           </View>
+        )}
+          
           <View style={styles.editBadge}>
               <Ionicons name="camera" size={14} color={"#fff"}/>
           </View>
@@ -89,6 +94,11 @@ const styles = StyleSheet.create({
     position: "relative",
     marginTop: 16,
     marginBottom: 16,
+  },
+  avatarImage : {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
   },
   avatarPlaceholder : {
     width: 96,
