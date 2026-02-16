@@ -94,8 +94,15 @@ export default function TabTwoScreen() {
       setAvatarUri(uri);
       saveAvatar(uri);
     }
-    
+  };
+
+  const handleLogout = () => {
+    Alert.alert('Déconnexion','Êtes-vous sûr de vouloir vous déconnecter ?', [
+      {text: 'Annuler', style:"cancel"},
+      {text: 'Déconnexion', style:"destructive", onPress: logout},
+    ])
   }
+
 
   return (
     <View style={styles.container}>
@@ -116,7 +123,7 @@ export default function TabTwoScreen() {
        <Text style={styles.email}>{user?.email}</Text>
       </View>
       <View style={styles.section}>
-        <TouchableOpacity style={styles.logoutButton}>
+        <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={24} color="#bf1414ff"/>
           <Text style={styles.logoutText}>Se Déconnecter</Text>
         </TouchableOpacity>
