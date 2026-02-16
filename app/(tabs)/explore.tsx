@@ -114,7 +114,7 @@ export default function TabTwoScreen() {
         Alert.alert("Succès", "notifications activées !")
       } else {
         Alert.alert(
-          "Permission reqyuse",
+          "Permission requise",
           "Veuillez autoriser les notifications dans les paramètres de votre appareil."
         )
       }

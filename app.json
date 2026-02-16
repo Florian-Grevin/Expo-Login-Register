@@ -2,7 +2,7 @@
   "expo": {
     "name": "expo-login-register",
     "slug": "expo-login-register",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "expologinregister",
@@ -57,7 +57,8 @@
       "policy": "appVersion"
     },
     "updates": {
-      "url": "https://u.expo.dev/8ef336a4-4512-45ef-963c-946b24514c5b"
+      "enabled": false
     }
+
   }
 }
