@@ -51,6 +51,12 @@
         "projectId": "8ef336a4-4512-45ef-963c-946b24514c5b"
       }
     },
-    "owner": "grevflor"
+    "owner": "grevflor",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/8ef336a4-4512-45ef-963c-946b24514c5b"
+    }
   }
 }
