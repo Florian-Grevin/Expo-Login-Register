@@ -25,6 +25,7 @@ export function AuthProvider({ children }: { children : ReactNode }) {
 
     useEffect(() => {
         loadStoredAuth();
+        AsyncStorage.clear();
     }, [])
 
     const loadStoredAuth = async () => {
