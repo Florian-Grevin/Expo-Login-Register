@@ -1,14 +1,16 @@
 import { useAuth } from "@/contexts/AuthContext";
+import { registerAndSavePushToken } from "@/services/notifications";
 import { Ionicons } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from "react";
-import { Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Alert, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 const AVATAR_STORAGE_KEY = 'user_avatar';
 
 export default function TabTwoScreen() {
   const {user, logout} = useAuth();
+  const [isEnablingNotifications, setIsEnablingNotifications] = useState(false);
   const [avatarUri, setAvatarUri] = useState<string | null>(null);
 
   useEffect(() => {
@@ -104,6 +106,27 @@ export default function TabTwoScreen() {
   }
 
 
+  const handleEnableNotifications = async () => {
+    setIsEnablingNotifications(true);
+    try{
+      const success = await registerAndSavePushToken();
+      if(success) {
+        Alert.alert("Succès", "notifications activées !")
+      } else {
+        Alert.alert(
+          "Permission reqyuse",
+          "Veuillez autoriser les notifications dans les paramètres de votre appareil."
+        )
+      }
+    }
+    catch (error) {
+      Alert.alert("Erreur", "Impossible d'activer les notifications")
+    }
+    finally {
+      setIsEnablingNotifications(false);      
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -121,6 +144,24 @@ export default function TabTwoScreen() {
           </View>
         </TouchableOpacity>
        <Text style={styles.email}>{user?.email}</Text>
+      </View>
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Paramètres</Text>
+        <TouchableOpacity 
+          style={styles.menuItem}
+          onPress={handleEnableNotifications}
+          disabled={isEnablingNotifications}
+        >
+          <View style={styles.menuItemLeft}>
+            <Ionicons name="notifications-outline" size={24} color={"#333"}/>
+            <Text style={styles.menuItemText}>Activer les notifications</Text>
+          </View>
+          {isEnablingNotifications ? (
+            <ActivityIndicator size={"small"} color={"#118397ff"}/>
+          ) : (
+            <Ionicons name="chevron-forward" size={20} color={"#999"}/>
+          )}
+        </TouchableOpacity>
       </View>
       <View style={styles.section}>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
@@ -182,6 +223,33 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: "#e0e0e0",
+  },
+  sectionTitle : {
+    fontSize: 14,
+    color : "#666",
+    fontWeight : 600,
+    textTransform: "uppercase",
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    paddingBottom: 8,
+  },
+  menuItem : {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingVertical: 16,
+    paddingHorizontal: 16,
+    borderTopWidth: 1,
+    borderTopColor: '#E0E0E0',
+  },
+  menuItemLeft : {
+    flexDirection: "row",
+    alignItems: "center",
+    gap:12,
+  },
+  menuItemText : {
+    fontSize: 16,
+    color: "#333",
   },
   logoutButton : {
     backgroundColor: "#fff",

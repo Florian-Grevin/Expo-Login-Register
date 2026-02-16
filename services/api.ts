@@ -1,6 +1,6 @@
 //const API_URL = 'http://localhost:3000/api';
-//const API_URL = "http://mobiletechnocite-backnode-kjgflm-ad0f22-185-166-39-249.traefik.me/api";
-const API_URL = 'http://10.10.25.5:3000/api';
+const API_URL = "http://mobiletechnocite-backnode-kjgflm-ad0f22-185-166-39-249.traefik.me/api";
+//const API_URL = 'http://10.10.25.5:3000/api';
 
 class ApiService {
     private token: string | null = null;
