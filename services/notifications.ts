@@ -2,6 +2,7 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { Platform } from 'react-native';
+import { api } from './api';
 
 
 Notifications.setNotificationHandler({
@@ -51,7 +52,39 @@ export async function registerForPushNotificationsAsync(): Promise<
         const pushToken = await Notifications.getExpoPushTokenAsync({
             projectId,
         });
+        token = pushToken.data;
+        console.log("push token : ", token);
     } catch (error) {
-        console.error("Erreur obteniton push token", error);
+        console.error("Erreur obtention push token", error);
     }
+    return token;
 }
+
+export async function registerAndSavePushToken() : Promise<boolean> {
+    const token = await registerForPushNotificationsAsync();
+
+    if(token) {
+        try {
+            await api.savePushToken(token);
+            return true;
+        }
+        catch (error) {
+            console.error("Erreur sauvegarde push token",error);
+            return false;
+        }
+    }
+
+    return false;
+}
+export function addNotificationReceivedListener(
+  callback: (notification: Notifications.Notification) => void
+) {
+  return Notifications.addNotificationReceivedListener(callback);
+}
+
+export function addNotificationResponseReceivedListener(
+  callback: (notification: Notifications.NotificationResponse) => void
+) {
+  return Notifications.addNotificationResponseReceivedListener(callback);
+}
+
