@@ -28,13 +28,19 @@ function RootLayoutNav() {
       </View>
     );
   }
-
+  //if(isLoading) return null
+  return (
+    <Stack screenOptions={{headerShown : false}}>
+      {user? (<Stack.Screen name="(tabs)"/>) : (<Stack.Screen name="(login)"/>)}
+    </Stack>
+  )
+/*
   return (
     <Stack screenOptions={{headerShown : false}}>
       <Stack.Screen name="(auth)"/>
       <Stack.Screen name="(tabs)"/>
     </Stack>
-  );
+  );*/
 }
 
 export default function RootLayout() {
